@@ -20,7 +20,7 @@ namespace SocketServer
         {
             this.port = port;
             
-            this.ipAddress = IPAddress.Loopback;
+            ipAddress = IPAddress.Parse("192.168.0.192"); //ide majd be kell írni a PEMIK Wifi által kiosztott ip-jét, aki a szervergép lesz
             if (this.ipAddress == null)
                 throw new Exception("No IPv4 address for server");
         }
