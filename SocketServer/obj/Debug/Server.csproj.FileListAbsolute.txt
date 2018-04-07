@@ -1,0 +1,9 @@
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\bin\Debug\SocketServer.exe.config
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\bin\Debug\SocketServer.exe
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\bin\Debug\SocketServer.pdb
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\obj\Debug\SocketServer.exe
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\obj\Debug\SocketServer.pdb
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\obj\Debug\Server.csprojResolveAssemblyReference.cache
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\bin\Debug\DB_Storage.mdf
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\bin\Debug\DB_Storage_log.ldf

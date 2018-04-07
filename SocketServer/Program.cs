@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using Communication;
 using SocketServer;
 
 namespace Program
@@ -7,6 +10,9 @@ namespace Program
     {
         static void Main(string[] args)
         {
+            Order o = new Order(3, "2018-04-05", "2018-05-06", 4, false, "ads");
+            DbHandler.addOrder(o);
+
             try
             {
                 int port = 50000;

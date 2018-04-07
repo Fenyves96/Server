@@ -20,7 +20,7 @@ namespace SocketServer
         {
             this.port = port;
             
-            ipAddress = IPAddress.Parse("192.168.0.192"); //ide majd be kell írni a PEMIK Wifi által kiosztott ip-jét, aki a szervergép lesz
+            this.ipAddress = IPAddress.Parse("127.0.0.1");
             if (this.ipAddress == null)
                 throw new Exception("No IPv4 address for server");
         }
@@ -63,9 +63,18 @@ namespace SocketServer
                     string requestStr = await reader.ReadLineAsync();
                     if (requestStr != null)
                     {
-                        CommObject request = serializer.Deserialize<CommObject>(requestStr);
-                        Console.WriteLine("Received service request from: " + request.Sender+" Message: "+request.Message);
-                        CommObject response = Response(request);
+
+                        //CommObject request = serializer.Deserialize<CommObject>(requestStr);
+                        Console.WriteLine(requestStr);
+                    
+                        Order request = serializer.Deserialize<Order>(requestStr);
+                        request.Print();
+
+                        Console.WriteLine(request.ID.ToString());
+                        //Console.WriteLine(request.DateIn);
+                        Console.WriteLine("Received service request from: " + request.ToString());
+                        Order response = Response(request);
+            
                         Console.WriteLine("Computed response is: " + response + "\n");
                         await writer.WriteLineAsync(serializer.Serialize(response));
                     }
@@ -78,7 +87,8 @@ namespace SocketServer
                 tcpClient.Close();
             }
             catch (Exception ex)
-            {                
+            {
+                Console.WriteLine(ex.Message);
                 if (tcpClient.Connected)
                 {                    
                     tcpClient.Close();
@@ -86,10 +96,10 @@ namespace SocketServer
                 Console.WriteLine("Connection closed, client: " + clientEndPoint);
             }
         }
-        private static CommObject Response(CommObject request)
+        private static Order Response(Order request)
         {
-            CommObject response = new CommObject("Tisztelt "+request.Sender+"!"," Üzenetét("+request.Message+") megkaptuk, ekkor: ["+ DateTime.Now+"]");
-            return response;
+            //Próbáljuk meg elmenteni adatbázisba
+            return request;
         }
     }
 }

@@ -1,0 +1,7 @@
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\bin\Debug\SocketServer.exe.config
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\bin\Debug\SocketServer.exe
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\bin\Debug\SocketServer.pdb
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\obj\Debug\SocketServer.csproj.CoreCompileInputs.cache
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\obj\Debug\SocketServer.exe
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\obj\Debug\SocketServer.pdb
+D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\SocketServer-master\SocketServer\obj\Debug\SocketServer.csprojResolveAssemblyReference.cache
