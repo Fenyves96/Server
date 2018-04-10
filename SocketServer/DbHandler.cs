@@ -16,7 +16,7 @@ namespace SocketServer
         {
             try
             {
-                SqlConnection con = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Server\SocketServer\DB_Storage.mdf;Integrated Security=True");
+                SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
                 con.Open();
                 int confirmed = 0;
                 if (order.Confirmed)
@@ -27,7 +27,6 @@ namespace SocketServer
 
                 string dateIn = order.DateIn.ToString("yyyy-MM-dd");
                 string dateOut = order.DateOut.ToString("yyyy-MM-dd");
-                int id = order.ID;
                 int customerID = order.CustomerID;
                 int dispatcherID = order.DispatcherID;
                 string orderTime = order.OrderTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -37,9 +36,9 @@ namespace SocketServer
                 SqlCommand cmd = new SqlCommand
                     (
                     "INSERT INTO Orders" +
-                    "(OrderID, CustomerID, DispatcherID, DateIn," +
+                    "(CustomerID, DispatcherID, DateIn," +
                     "DateOut, PalletQuantity, Cooled, Confirmed," +
-                    " Terminal, OrderTime, Comment)"+ "VALUES("+order.ID+","+customerID+","+dispatcherID+",'"+dateIn+"','"+dateOut+"',"+quantity+","+cooled+","+confirmed+","+terminal+",'"+orderTime+"','"+comment+"')"
+                    " Terminal, OrderTime, Comment)"+ "VALUES("+customerID+","+dispatcherID+",'"+dateIn+"','"+dateOut+"',"+quantity+","+cooled+","+confirmed+","+terminal+",'"+orderTime+"','"+comment+"')"
                     );
                 cmd.Connection = con;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -51,9 +50,52 @@ namespace SocketServer
                 }
             }
             catch (Exception e) {
-                if(e.GetHashCode()== 43527150)
+                if (e.GetHashCode() == 43527150)
+                {
                     Console.WriteLine("There is an order with this ID.");
+                    Console.WriteLine(e.Message);
+                }
+                else
+                    Console.WriteLine(e.Message);
             }
         }
+
+        public static List<Order> GetOrders()
+        {
+            List<Order> orders=new List<Order>();
+            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            con.Open();
+            SqlCommand cmd = new SqlCommand
+                    ("select * from Orders");
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int ID = int.Parse(dt.Rows[i]["OrderID"].ToString());
+                string comment = dt.Rows[i]["Comment"].ToString();
+                string dateIn = dt.Rows[i]["DateIn"].ToString();
+                string dateOut = dt.Rows[i]["DateOut"].ToString();
+                int customerID = int.Parse(dt.Rows[i]["CustomerID"].ToString());
+                int dispatcherID = int.Parse(dt.Rows[i]["DispatcherID"].ToString());
+                string orderTime = dt.Rows[i]["Comment"].ToString();
+                int quantity = int.Parse(dt.Rows[i]["PalletQuantity"].ToString());
+                int terminal = int.Parse(dt.Rows[i]["Terminal"].ToString());
+                bool cooled = false;
+                string cooledstring = dt.Rows[i]["Cooled"].ToString();
+                if (cooledstring.Equals("True"))
+                {
+                    cooled = true;
+                }
+                 
+                Order o = new Order(ID,customerID,dateIn,dateOut,quantity,cooled,comment);
+                orders.Add(o);
+            }
+            
+            return orders;
+        }
+
+
     }
 }

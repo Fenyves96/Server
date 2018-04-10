@@ -63,20 +63,28 @@ namespace SocketServer
                     string requestStr = await reader.ReadLineAsync();
                     if (requestStr != null)
                     {
+                        if (requestStr == "ListOfOrders")
+                        {
+                            List<Order> orders = DbHandler.GetOrders();
+                            await writer.WriteLineAsync(serializer.Serialize(orders));
+                        }
+                        else
+                        {
+                            //CommObject request = serializer.Deserialize<CommObject>(requestStr);
+                            Console.WriteLine(requestStr);
 
-                        //CommObject request = serializer.Deserialize<CommObject>(requestStr);
-                        Console.WriteLine(requestStr);
-                    
-                        Order request = serializer.Deserialize<Order>(requestStr);
-                        request.Print();
+                            Order request = serializer.Deserialize<Order>(requestStr);
+                            DbHandler.addOrder(request);
+                            request.Print();
 
-                        Console.WriteLine(request.ID.ToString());
-                        //Console.WriteLine(request.DateIn);
-                        Console.WriteLine("Received service request from: " + request.ToString());
-                        Order response = Response(request);
-            
-                        Console.WriteLine("Computed response is: " + response + "\n");
-                        await writer.WriteLineAsync(serializer.Serialize(response));
+                            Console.WriteLine(request.ID.ToString());
+                            //Console.WriteLine(request.DateIn);
+                            Console.WriteLine("Received service request from: " + request.ToString());
+                            Order response = Response(request);
+
+                            Console.WriteLine("Computed response is: " + response + "\n");
+                            await writer.WriteLineAsync(serializer.Serialize(response));
+                        }
                     }
                     else
                     {
