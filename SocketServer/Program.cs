@@ -11,12 +11,7 @@ namespace Program
     {
         static void Main(string[] args)
         {
-            List<Order> orders=DbHandler.GetOrders();
-            foreach(Order o in orders)
-            {
-                o.Print();
-            }
-            
+
             try
             {
                 int port = 50000;

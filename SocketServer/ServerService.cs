@@ -68,15 +68,20 @@ namespace SocketServer
                             List<Order> orders = DbHandler.GetOrders();
                             await writer.WriteLineAsync(serializer.Serialize(orders));
                         }
+                        else if (requestStr == "ListOfCustomers")
+                        {
+                            List<Customer> customers = DbHandler.GetCustomers();
+                            await writer.WriteLineAsync(serializer.Serialize(customers));
+                        }
                         else
                         {
                             //CommObject request = serializer.Deserialize<CommObject>(requestStr);
                             Console.WriteLine(requestStr);
 
                             Order request = serializer.Deserialize<Order>(requestStr);
+                            Console.WriteLine(request.DateIn.ToLocalTime().ToString());
                             DbHandler.addOrder(request);
                             request.Print();
-
                             Console.WriteLine(request.ID.ToString());
                             //Console.WriteLine(request.DateIn);
                             Console.WriteLine("Received service request from: " + request.ToString());
@@ -96,7 +101,6 @@ namespace SocketServer
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 if (tcpClient.Connected)
                 {                    
                     tcpClient.Close();

@@ -25,11 +25,11 @@ namespace SocketServer
                 if (order.Cooled)
                     cooled = 1;
 
-                string dateIn = order.DateIn.ToString("yyyy-MM-dd");
-                string dateOut = order.DateOut.ToString("yyyy-MM-dd");
+                string dateIn = order.DateIn.ToLocalTime().ToString("yyyy-MM-dd");
+                string dateOut = order.DateOut.ToLocalTime().ToString("yyyy-MM-dd");
                 int customerID = order.CustomerID;
                 int dispatcherID = order.DispatcherID;
-                string orderTime = order.OrderTime.ToString("yyyy-MM-dd HH:mm:ss");
+                string orderTime = order.OrderTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 int quantity = order.PalletQuantity;
                 int terminal = order.Terminal;
                 string comment = order.Comment;
@@ -95,7 +95,27 @@ namespace SocketServer
             
             return orders;
         }
+        //TODO:Ezt még át kell írni
+        internal static List<Customer> GetCustomers()
+        {
+            List<Customer> customers = new List<Customer>();
+            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            con.Open();
+            SqlCommand cmd = new SqlCommand
+                    ("select * from Customers");
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int ID = int.Parse(dt.Rows[i]["CustomerID"].ToString());
+                string name = dt.Rows[i]["Name"].ToString();
+                Customer c = new Customer(ID, name);
+                customers.Add(c);
+            }
 
-
+            return customers;
+        }
     }
 }

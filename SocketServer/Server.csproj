@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommObject.cs" />
+    <Compile Include="Customer.cs" />
     <Compile Include="DbHandler.cs" />
     <Compile Include="DB_StorageDataSet.cs">
       <DependentUpon>DB_StorageDataSet.xsd</DependentUpon>
@@ -68,6 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DB_StorageDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dispatcher.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +80,7 @@
     </Compile>
     <Compile Include="ServerService.cs" />
     <Compile Include="OrderConatiner.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
