@@ -78,12 +78,15 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ServerService.cs" />
+    <Compile Include="AsyncService.cs" />
     <Compile Include="OrderConatiner.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="ClassDiagram3.cd" />
     <None Include="DB_StorageDataSet.xsc">
       <DependentUpon>DB_StorageDataSet.xsd</DependentUpon>
     </None>

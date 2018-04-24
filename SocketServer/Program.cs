@@ -7,15 +7,21 @@ using SocketServer;
 
 namespace Program
 {
-    class ServiceProgram
+    class ServerContoller
     {
+        static AsyncService service;
         static void Main(string[] args)
         {
+            ServerContoller.StartService();
+            
+        }
 
+        public static void StartService()
+        {
             try
             {
                 int port = 50000;
-                AsyncService service = new AsyncService(port);
+                service = new AsyncService(port);
                 service.Run();
                 Console.ReadLine();
             }

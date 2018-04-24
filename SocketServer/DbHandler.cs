@@ -44,10 +44,7 @@ namespace SocketServer
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    Console.WriteLine(dt.Rows[i]["Comment"].ToString());
-                }
+              
             }
             catch (Exception e) {
                 if (e.GetHashCode() == 43527150)
