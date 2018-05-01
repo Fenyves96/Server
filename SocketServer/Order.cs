@@ -25,7 +25,11 @@ namespace Communication
 
         public int ID { get; set; }
         public int CustomerID { get; set; }
-        public DateTime DateIn { get; set; }
+        public DateTime DateIn {
+        get { return dateIn;}
+            set { dateIn = value.ToLocalTime(); }
+        }
+        public DateTime dateIn;
         public DateTime DateOut { get; set; }
         public int PalletQuantity { get; set; }
         public bool Cooled { get; set; }
@@ -43,7 +47,7 @@ namespace Communication
         {
             NextID++;
             ID = NextID;
-            DateIn = DateTime.Parse(dateIn);
+            this.dateIn = DateTime.Parse(dateIn);
             DateOut = DateTime.Parse(dateOut);
             PalletQuantity = productQuantity;
             Cooled = cooled;
@@ -58,7 +62,7 @@ namespace Communication
         public Order(int OrderID, int customerID, string dateIn, string dateOut, int productQuantity, bool cooled, string comment = "")
         {
             ID = OrderID;
-            DateIn = DateTime.Parse(dateIn);
+            this.dateIn = DateTime.Parse(dateIn);
             DateOut = DateTime.Parse(dateOut);
             PalletQuantity = productQuantity;
             Cooled = cooled;

@@ -67,16 +67,19 @@ namespace SocketServer
                         {
                             List<Order> orders = DbHandler.GetOrders();
                             await writer.WriteLineAsync(serializer.Serialize(orders));
+                            Console.WriteLine("Orders Request");
                         }
                         else if (requestStr == "ListOfCustomers")
                         {
                             List<Customer> customers = DbHandler.GetCustomers();
                             await writer.WriteLineAsync(serializer.Serialize(customers));
+                            Console.WriteLine("Customers Request");
                         }
                         else if (requestStr == "ListOfDeliveryNotes")
                         {
                             List<DeliveryNote> deliverynotes = DbHandler.GetDeliveryNotes();
                             await writer.WriteLineAsync(serializer.Serialize(deliverynotes));
+                            Console.WriteLine("DeliveryNotes Request");
                         }
                         else
                         {

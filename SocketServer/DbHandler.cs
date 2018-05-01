@@ -11,12 +11,15 @@ namespace SocketServer
 {
     class DbHandler
     {
+        public static string MateFenyvConnectionString= @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\MasodikIteracio\Server-master\SocketServer\DB_Storage.mdf; Integrated Security = True";
+        //Majd ide írd be a saját connectionöd útvonalát
+        public static string KovacsMateConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True";
         //Order hozzáadása az adatbázishoz
         public static void addOrder(Order order)
         {
             try
             {
-                SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
                 con.Open();
                 int confirmed = 0;
                 if (order.Confirmed)
@@ -60,7 +63,7 @@ namespace SocketServer
         public static List<Order> GetOrders()
         {
             List<Order> orders=new List<Order>();
-            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Orders");
@@ -96,7 +99,7 @@ namespace SocketServer
         internal static List<Customer> GetCustomers()
         {
             List<Customer> customers = new List<Customer>();
-            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Customers");
@@ -118,7 +121,7 @@ namespace SocketServer
         internal static List<DeliveryNote> GetDeliveryNotes()
         {
             List<DeliveryNote> deliverynotes = new List<DeliveryNote>();
-            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from DeliveryNotes");
@@ -128,10 +131,16 @@ namespace SocketServer
             da.Fill(dt);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                
                 int ID = int.Parse(dt.Rows[i]["Id"].ToString());
                 int foremanid = int.Parse(dt.Rows[i]["ForemanID"].ToString());
                 int orderid = int.Parse(dt.Rows[i]["OrderID"].ToString());
-                bool success = bool.Parse(dt.Rows[i]["Success"].ToString());
+                bool success = false;
+                string succesString = dt.Rows[i]["Success"].ToString();;
+                if (succesString.Equals("True"))
+                {
+                    success = true;
+                }
                 DeliveryNote dn = new DeliveryNote(ID, success, foremanid, orderid);
                 deliverynotes.Add(dn);
             }
@@ -143,7 +152,7 @@ namespace SocketServer
         {
             try
             {
-                SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
                 con.Open();
                 int orderID = deliverynote.orderid;
                 int foremanID = deliverynote.foremanid;
