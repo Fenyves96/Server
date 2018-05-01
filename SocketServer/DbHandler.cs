@@ -16,7 +16,7 @@ namespace SocketServer
         {
             try
             {
-                SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+                SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
                 con.Open();
                 int confirmed = 0;
                 if (order.Confirmed)
@@ -60,7 +60,7 @@ namespace SocketServer
         public static List<Order> GetOrders()
         {
             List<Order> orders=new List<Order>();
-            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Orders");
@@ -96,7 +96,7 @@ namespace SocketServer
         internal static List<Customer> GetCustomers()
         {
             List<Customer> customers = new List<Customer>();
-            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Customers");
@@ -113,6 +113,65 @@ namespace SocketServer
             }
 
             return customers;
+        }
+
+        internal static List<DeliveryNote> GetDeliveryNotes()
+        {
+            List<DeliveryNote> deliverynotes = new List<DeliveryNote>();
+            SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+            con.Open();
+            SqlCommand cmd = new SqlCommand
+                    ("select * from DeliveryNotes");
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int ID = int.Parse(dt.Rows[i]["Id"].ToString());
+                int foremanid = int.Parse(dt.Rows[i]["ForemanID"].ToString());
+                int orderid = int.Parse(dt.Rows[i]["OrderID"].ToString());
+                bool success = bool.Parse(dt.Rows[i]["Success"].ToString());
+                DeliveryNote dn = new DeliveryNote(ID, success, foremanid, orderid);
+                deliverynotes.Add(dn);
+            }
+
+            return deliverynotes;
+        }
+
+        public static void addDeliveryNote(DeliveryNote deliverynote)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True");
+                con.Open();
+                int orderID = deliverynote.orderid;
+                int foremanID = deliverynote.foremanid;
+                bool success = deliverynote.success;
+                SqlCommand cmd = new SqlCommand
+                    (
+                    "INSERT INTO DeliveryNotes" +
+                    "(OrderID, ForemanID, Success," + "VALUES(" + orderID + "," + foremanID + "," + success + ",)"
+                    );
+                    /*"DateOut, PalletQuantity, Cooled, Confirmed," +
+                    " Terminal, OrderTime, Comment)" + "VALUES(" + customerID + "," + dispatcherID + ",'" + dateIn + "','" + dateOut + "'," + quantity + "," + cooled + "," + confirmed + "," + terminal + ",'" + orderTime + "','" + comment + "')"
+                    );*/
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+            }
+            catch (Exception e)
+            {
+                if (e.GetHashCode() == 43527150)
+                {
+                    Console.WriteLine("There is a delivery note with this ID.");
+                    Console.WriteLine(e.Message);
+                }
+                else
+                    Console.WriteLine(e.Message);
+            }
         }
     }
 }

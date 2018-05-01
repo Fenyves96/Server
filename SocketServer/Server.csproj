@@ -69,7 +69,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DB_StorageDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DeliveryNote.cs" />
     <Compile Include="Dispatcher.cs" />
+    <Compile Include="Foreman.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

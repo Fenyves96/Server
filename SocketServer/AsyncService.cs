@@ -73,6 +73,11 @@ namespace SocketServer
                             List<Customer> customers = DbHandler.GetCustomers();
                             await writer.WriteLineAsync(serializer.Serialize(customers));
                         }
+                        else if (requestStr == "ListOfDeliveryNotes")
+                        {
+                            List<DeliveryNote> deliverynotes = DbHandler.GetDeliveryNotes();
+                            await writer.WriteLineAsync(serializer.Serialize(deliverynotes));
+                        }
                         else
                         {
                             //CommObject request = serializer.Deserialize<CommObject>(requestStr);

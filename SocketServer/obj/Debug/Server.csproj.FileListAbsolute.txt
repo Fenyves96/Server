@@ -7,3 +7,11 @@ D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer
 D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\obj\Debug\SocketServer.exe
 D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\obj\Debug\SocketServer.pdb
 D:\Suli\egyetem\6. félév\Rendszerfejlesztés\Programok\Git\Server\SocketServer\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\bin\Debug\SocketServer.exe.config
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\obj\Debug\SocketServer.exe
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\obj\Debug\SocketServer.pdb
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\bin\Debug\DB_Storage.mdf
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\bin\Debug\DB_Storage_log.ldf
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\bin\Debug\SocketServer.exe
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\bin\Debug\SocketServer.pdb
+C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\obj\Debug\Server.csprojResolveAssemblyReference.cache
