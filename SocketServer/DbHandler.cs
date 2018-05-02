@@ -19,7 +19,7 @@ namespace SocketServer
         {
             try
             {
-                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                SqlConnection con = new SqlConnection(KovacsMateConnectionString);
                 con.Open();
                 int confirmed = 0;
                 if (order.Confirmed)
@@ -63,7 +63,7 @@ namespace SocketServer
         public static List<Order> GetOrders()
         {
             List<Order> orders=new List<Order>();
-            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+            SqlConnection con = new SqlConnection(KovacsMateConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Orders");
@@ -99,7 +99,7 @@ namespace SocketServer
         internal static List<Customer> GetCustomers()
         {
             List<Customer> customers = new List<Customer>();
-            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+            SqlConnection con = new SqlConnection(KovacsMateConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Customers");
@@ -121,7 +121,7 @@ namespace SocketServer
         internal static List<DeliveryNote> GetDeliveryNotes()
         {
             List<DeliveryNote> deliverynotes = new List<DeliveryNote>();
-            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+            SqlConnection con = new SqlConnection(KovacsMateConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from DeliveryNotes");
@@ -152,7 +152,7 @@ namespace SocketServer
         {
             try
             {
-                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                SqlConnection con = new SqlConnection(KovacsMateConnectionString);
                 con.Open();
                 int orderID = deliverynote.orderid;
                 int foremanID = deliverynote.foremanid;
