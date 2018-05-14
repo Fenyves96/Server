@@ -59,8 +59,25 @@ namespace Communication
 
         }
 
+
         public Order(int OrderID, int customerID, string dateIn, string dateOut, int productQuantity, bool cooled, string comment = "")
         {
+            ID = OrderID;
+            this.dateIn = DateTime.Parse(dateIn);
+            DateOut = DateTime.Parse(dateOut);
+            PalletQuantity = productQuantity;
+            Cooled = cooled;
+            Comment = comment;
+            OrderTime = DateTime.Now;
+            DispatcherID = 0;
+            Terminal = 0;
+            CustomerID = customerID;
+
+        }
+
+        public Order(int OrderID, int customerID, string dateIn, string dateOut, int productQuantity, bool cooled,bool confirmed, string comment = "")
+        {
+            Confirmed = confirmed;
             ID = OrderID;
             this.dateIn = DateTime.Parse(dateIn);
             DateOut = DateTime.Parse(dateOut);

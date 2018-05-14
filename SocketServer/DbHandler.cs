@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,32 @@ namespace SocketServer
         public static string MateFenyvConnectionString= @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = D:\Suli\egyetem\6. félév\Rendszerfejlesztés\MasodikIteracio\Server-master\SocketServer\DB_Storage.mdf; Integrated Security = True";
         //Majd ide írd be a saját connectionöd útvonalát
         public static string KovacsMateConnectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = C:\Users\kovac\OneDrive\Documents\GitHub\Server\SocketServer\DB_Storage.mdf; Integrated Security = True";
+
+        
+        public static void setConfirmedOrder(int id)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand
+                        (
+                            "UPDATE Orders SET Confirmed=1 Where OrderId=" + id
+                        );
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+            }
+            catch (Exception e) { Console.Write(e.Message); }
+        }
         //Order hozzáadása az adatbázishoz
         public static void addOrder(Order order)
         {
             try
             {
-                SqlConnection con = new SqlConnection(KovacsMateConnectionString);
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
                 con.Open();
                 int confirmed = 0;
                 if (order.Confirmed)
@@ -27,7 +48,6 @@ namespace SocketServer
                 int cooled = 0;
                 if (order.Cooled)
                     cooled = 1;
-
                 string dateIn = order.DateIn.ToLocalTime().ToString("yyyy-MM-dd");
                 string dateOut = order.DateOut.ToLocalTime().ToString("yyyy-MM-dd");
                 int customerID = order.CustomerID;
@@ -60,10 +80,29 @@ namespace SocketServer
             }
         }
 
+        public static void setOrderTerminal(int id, int terminal)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand
+                        (
+                            "UPDATE Orders SET Terminal="+terminal+" Where OrderId=" + id
+                        );
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+            }
+            catch (Exception e) { Console.Write(e.Message); }
+        }
+
         public static List<Order> GetOrders()
         {
             List<Order> orders=new List<Order>();
-            SqlConnection con = new SqlConnection(KovacsMateConnectionString);
+            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Orders");
@@ -83,23 +122,51 @@ namespace SocketServer
                 int quantity = int.Parse(dt.Rows[i]["PalletQuantity"].ToString());
                 int terminal = int.Parse(dt.Rows[i]["Terminal"].ToString());
                 bool cooled = false;
+                bool confirmed = false;
                 string cooledstring = dt.Rows[i]["Cooled"].ToString();
                 if (cooledstring.Equals("True"))
                 {
                     cooled = true;
                 }
-                 
-                Order o = new Order(ID,customerID,dateIn,dateOut,quantity,cooled,comment);
+                string confirmedstring = dt.Rows[i]["Confirmed"].ToString();
+                if (confirmedstring.Equals("True"))
+                {
+                    confirmed = true;
+                }
+
+                Order o = new Order(ID,customerID,dateIn,dateOut,quantity,cooled,confirmed,comment);
+                o.Terminal = terminal;
                 orders.Add(o);
             }
             
             return orders;
         }
+
+        public static void SetDeliveryNoteToSuccess(int id)
+        {
+
+            try
+            {
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand
+                        (
+                            "UPDATE DeliveryNotes SET Success=1 Where Id=" + id
+                        );
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+            }
+            catch (Exception e) { Console.Write(e.Message); }
+        }
+
         //TODO:Ezt még át kell írni
         internal static List<Customer> GetCustomers()
         {
             List<Customer> customers = new List<Customer>();
-            SqlConnection con = new SqlConnection(KovacsMateConnectionString);
+            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from Customers");
@@ -121,7 +188,7 @@ namespace SocketServer
         internal static List<DeliveryNote> GetDeliveryNotes()
         {
             List<DeliveryNote> deliverynotes = new List<DeliveryNote>();
-            SqlConnection con = new SqlConnection(KovacsMateConnectionString);
+            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
             con.Open();
             SqlCommand cmd = new SqlCommand
                     ("select * from DeliveryNotes");
@@ -152,15 +219,21 @@ namespace SocketServer
         {
             try
             {
-                SqlConnection con = new SqlConnection(KovacsMateConnectionString);
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
                 con.Open();
                 int orderID = deliverynote.orderid;
                 int foremanID = deliverynote.foremanid;
-                bool success = deliverynote.success;
+                bool success_bool = deliverynote.success;
+                int success;
+                if (success_bool)
+                    success = 1;
+                else
+                    success = 0;
+         
                 SqlCommand cmd = new SqlCommand
                     (
                     "INSERT INTO DeliveryNotes" +
-                    "(OrderID, ForemanID, Success," + "VALUES(" + orderID + "," + foremanID + "," + success + ",)"
+                    "(OrderID, ForemanID, Success) " + "VALUES(" + orderID + "," + foremanID + "," + success + ")"
                     );
                     /*"DateOut, PalletQuantity, Cooled, Confirmed," +
                     " Terminal, OrderTime, Comment)" + "VALUES(" + customerID + "," + dispatcherID + ",'" + dateIn + "','" + dateOut + "'," + quantity + "," + cooled + "," + confirmed + "," + terminal + ",'" + orderTime + "','" + comment + "')"

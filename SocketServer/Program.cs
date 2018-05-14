@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using Communication;
 using SocketServer;
 
@@ -21,10 +22,28 @@ namespace Program
         {
             try
             {
+
+
+                //DeliveryNote d = new DeliveryNote();
+                //d.foremanid = 1;
+                //d.orderid = 4;
+                //d.success = true;
+                //DbHandler.addDeliveryNote(d);
+                //List<Order> orders = DbHandler.GetOrders();
+                //foreach (Order o in orders) {
+                //    Console.WriteLine(o.Terminal);
+                //}
+                //List<DeliveryNote> notes = DbHandler.GetDeliveryNotes();
+                //foreach(DeliveryNote d in notes)
+                //{
+                //    Console.WriteLine(d.orderid);
+                //}
+
                 int port = 50000;
                 service = new AsyncService(port);
                 service.Run();
                 Console.ReadLine();
+               
             }
             catch (Exception ex)
             {

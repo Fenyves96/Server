@@ -63,7 +63,26 @@ namespace SocketServer
                     string requestStr = await reader.ReadLineAsync();
                     if (requestStr != null)
                     {
-                        if (requestStr == "ListOfOrders")
+                        if (requestStr == "SetOrderTerminal")
+                        {
+                            requestStr = await reader.ReadLineAsync();
+                            int id = Int32.Parse(requestStr);
+                            requestStr = await reader.ReadLineAsync();
+                            int terminal= Int32.Parse(requestStr);
+                            DbHandler.setOrderTerminal(id,terminal);
+                            await writer.WriteLineAsync("success");
+                            Console.WriteLine("SetOrderTerminal" +"ID"+ id+"Terminal:"+terminal);
+                        }
+
+                        else if (requestStr == "SetOrderConfirmed")
+                        {
+                            requestStr = await reader.ReadLineAsync();
+                            int id =  Int32.Parse(requestStr);
+                            DbHandler.setConfirmedOrder(id);
+                            await writer.WriteLineAsync("success");
+                            Console.WriteLine("OrderConfirmedWithID" + id);
+                        }
+                        else if (requestStr == "ListOfOrders")
                         {
                             List<Order> orders = DbHandler.GetOrders();
                             await writer.WriteLineAsync(serializer.Serialize(orders));
@@ -80,6 +99,26 @@ namespace SocketServer
                             List<DeliveryNote> deliverynotes = DbHandler.GetDeliveryNotes();
                             await writer.WriteLineAsync(serializer.Serialize(deliverynotes));
                             Console.WriteLine("DeliveryNotes Request");
+                        }
+                        else if (requestStr.Equals("AddDeliveryNote"))
+                            {
+                            requestStr = await reader.ReadLineAsync();
+                            DeliveryNote request = serializer.Deserialize<DeliveryNote>(requestStr);
+                            DbHandler.addDeliveryNote(request);
+                            DeliveryNote response = new DeliveryNote();
+                            response = request;
+                            request.Print();
+                            Console.WriteLine(request.ID.ToString());
+                            await writer.WriteLineAsync(serializer.Serialize(response));
+                            //Console.WriteLine(request.DateIn);
+                        }
+                        else if (requestStr.Equals("SetDeliveryNoteToSuccess"))
+                        {
+                            requestStr = await reader.ReadLineAsync();
+                            int id = Int32.Parse(requestStr);
+                            DbHandler.SetDeliveryNoteToSuccess(id);
+                            await writer.WriteLineAsync("success");
+                            Console.WriteLine("DeliveryNoteToSuccess " + id);
                         }
                         else
                         {
@@ -109,6 +148,7 @@ namespace SocketServer
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 if (tcpClient.Connected)
                 {                    
                     tcpClient.Close();

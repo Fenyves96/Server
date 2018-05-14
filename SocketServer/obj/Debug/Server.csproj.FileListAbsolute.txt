@@ -24,3 +24,12 @@ D:\Suli\egyetem\6. félév\Rendszerfejlesztés\MasodikIteracio\Server-master\Soc
 D:\Suli\egyetem\6. félév\Rendszerfejlesztés\MasodikIteracio\Server-master\SocketServer\obj\Debug\SocketServer.exe
 D:\Suli\egyetem\6. félév\Rendszerfejlesztés\MasodikIteracio\Server-master\SocketServer\obj\Debug\SocketServer.pdb
 D:\Suli\egyetem\6. félév\Rendszerfejlesztés\MasodikIteracio\Server-master\SocketServer\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\fenyv\Desktop\Server-master\SocketServer\bin\Debug\DB_Storage.mdf
+C:\Users\fenyv\Desktop\Server-master\SocketServer\bin\Debug\DB_Storage_log.ldf
+C:\Users\fenyv\Desktop\Server-master\SocketServer\bin\Debug\SocketServer.exe.config
+C:\Users\fenyv\Desktop\Server-master\SocketServer\bin\Debug\SocketServer.exe
+C:\Users\fenyv\Desktop\Server-master\SocketServer\bin\Debug\SocketServer.pdb
+C:\Users\fenyv\Desktop\Server-master\SocketServer\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\fenyv\Desktop\Server-master\SocketServer\obj\Debug\SocketServer.exe
+C:\Users\fenyv\Desktop\Server-master\SocketServer\obj\Debug\SocketServer.pdb
+C:\Users\fenyv\Desktop\Server-master\SocketServer\obj\Debug\Server.csprojResolveAssemblyReference.cache
