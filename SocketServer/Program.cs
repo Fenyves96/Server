@@ -29,7 +29,7 @@ namespace Program
                 //d.orderid = 4;
                 //d.success = true;
                 //DbHandler.addDeliveryNote(d);
-                //List<Order> orders = DbHandler.GetOrders();
+                //
                 //foreach (Order o in orders) {
                 //    Console.WriteLine(o.Terminal);
                 //}

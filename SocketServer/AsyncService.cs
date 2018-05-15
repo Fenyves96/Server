@@ -120,6 +120,18 @@ namespace SocketServer
                             await writer.WriteLineAsync("success");
                             Console.WriteLine("DeliveryNoteToSuccess " + id);
                         }
+                        else if (requestStr.Equals("SetOrderOccupiedPlaces"))
+                        {
+                            requestStr = await reader.ReadLineAsync();
+                            int id = Int32.Parse(requestStr);
+                            requestStr = await reader.ReadLineAsync();
+                            int FirstOP = Int32.Parse(requestStr);
+                            requestStr = await reader.ReadLineAsync();
+                            int LastOP= Int32.Parse(requestStr);
+                            DbHandler.SetOrderOccupiedPlaces(id,FirstOP,LastOP);
+                            await writer.WriteLineAsync("success");
+                            Console.WriteLine("DeliveryNoteToSuccess " + id);
+                        }
                         else
                         {
                             //CommObject request = serializer.Deserialize<CommObject>(requestStr);

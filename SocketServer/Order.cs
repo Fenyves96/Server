@@ -38,10 +38,17 @@ namespace Communication
         public DateTime OrderTime { get; set; } //Mikor lett leadva a megrendelés
         public int DispatcherID { get; set; } //Ki dolgozta fel a megrendelést?
 
+        public int FirstOccupiedPlace { get; set; }
+        public int LastOccupiedPlace { get; set; }
+
 
         public string Comment;
 
-        public Order() { NextID++; ID = NextID; }
+        public Order() { NextID++; ID = NextID;
+            FirstOccupiedPlace = 0;
+            LastOccupiedPlace = 0;
+
+        }
 
         public Order(int customerID, string dateIn, string dateOut, int productQuantity, bool cooled, string comment = "")
         {
@@ -114,6 +121,10 @@ namespace Communication
                 Console.WriteLine("Kocsiszín: " + Terminal);
             }
             Console.WriteLine();
+            if (FirstOccupiedPlace > 0 && LastOccupiedPlace > 0)
+            {
+                Console.WriteLine(FirstOccupiedPlace+" "+LastOccupiedPlace);
+            }
 
         }
 

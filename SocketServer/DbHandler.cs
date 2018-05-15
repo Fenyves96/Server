@@ -56,12 +56,14 @@ namespace SocketServer
                 int quantity = order.PalletQuantity;
                 int terminal = order.Terminal;
                 string comment = order.Comment;
+                int FirstOP = order.FirstOccupiedPlace;
+                int LastOP = order.LastOccupiedPlace;
                 SqlCommand cmd = new SqlCommand
                     (
                     "INSERT INTO Orders" +
                     "(CustomerID, DispatcherID, DateIn," +
                     "DateOut, PalletQuantity, Cooled, Confirmed," +
-                    " Terminal, OrderTime, Comment)"+ "VALUES("+customerID+","+dispatcherID+",'"+dateIn+"','"+dateOut+"',"+quantity+","+cooled+","+confirmed+","+terminal+",'"+orderTime+"','"+comment+"')"
+                    " Terminal, OrderTime, Comment,FirstOccupiedPlace,LastOccupiedPlace)" + "VALUES("+customerID+","+dispatcherID+",'"+dateIn+"','"+dateOut+"',"+quantity+","+cooled+","+confirmed+","+terminal+",'"+orderTime+"','"+comment+"',"+FirstOP+","+LastOP+")"
                     );
                 cmd.Connection = con;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -74,6 +76,7 @@ namespace SocketServer
                 {
                     Console.WriteLine("There is an order with this ID.");
                     Console.WriteLine(e.Message);
+                    Console.WriteLine(e.StackTrace);
                 }
                 else
                     Console.WriteLine(e.Message);
@@ -101,45 +104,71 @@ namespace SocketServer
 
         public static List<Order> GetOrders()
         {
-            List<Order> orders=new List<Order>();
-            SqlConnection con = new SqlConnection(MateFenyvConnectionString);
-            con.Open();
-            SqlCommand cmd = new SqlCommand
-                    ("select * from Orders");
-            cmd.Connection = con;
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            for (int i = 0; i < dt.Rows.Count; i++)
+            try
             {
-                int ID = int.Parse(dt.Rows[i]["OrderID"].ToString());
-                string comment = dt.Rows[i]["Comment"].ToString();
-                string dateIn = dt.Rows[i]["DateIn"].ToString();
-                string dateOut = dt.Rows[i]["DateOut"].ToString();
-                int customerID = int.Parse(dt.Rows[i]["CustomerID"].ToString());
-                int dispatcherID = int.Parse(dt.Rows[i]["DispatcherID"].ToString());
-                string orderTime = dt.Rows[i]["Comment"].ToString();
-                int quantity = int.Parse(dt.Rows[i]["PalletQuantity"].ToString());
-                int terminal = int.Parse(dt.Rows[i]["Terminal"].ToString());
-                bool cooled = false;
-                bool confirmed = false;
-                string cooledstring = dt.Rows[i]["Cooled"].ToString();
-                if (cooledstring.Equals("True"))
+                List<Order> orders = new List<Order>();
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                con.Open();
+                SqlCommand cmd = new SqlCommand
+                        ("select * from Orders");
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    cooled = true;
-                }
-                string confirmedstring = dt.Rows[i]["Confirmed"].ToString();
-                if (confirmedstring.Equals("True"))
-                {
-                    confirmed = true;
-                }
+                    int ID = int.Parse(dt.Rows[i]["OrderID"].ToString());
+                    string comment = dt.Rows[i]["Comment"].ToString();
+                    string dateIn = dt.Rows[i]["DateIn"].ToString();
+                    string dateOut = dt.Rows[i]["DateOut"].ToString();
+                    int customerID = int.Parse(dt.Rows[i]["CustomerID"].ToString());
+                    int dispatcherID = int.Parse(dt.Rows[i]["DispatcherID"].ToString());
+                    string orderTime = dt.Rows[i]["Comment"].ToString();
+                    int quantity = int.Parse(dt.Rows[i]["PalletQuantity"].ToString());
+                    int terminal = int.Parse(dt.Rows[i]["Terminal"].ToString());
+                    bool cooled = false;
+                    bool confirmed = false;
+                    string cooledstring = dt.Rows[i]["Cooled"].ToString();
+                    int FirstOP = 0;
+                    int LastOP = 0;
+                    if (dt.Rows[i]["FirstOccupiedPlace"].ToString()!= "" && dt.Rows[i]["LastOccupiedPlace"].ToString() != "")
+                    {
+                        FirstOP = int.Parse(dt.Rows[i]["FirstOccupiedPlace"].ToString());
+                        LastOP = int.Parse(dt.Rows[i]["LastOccupiedPlace"].ToString());
+                    }
+                   
+                    if (cooledstring.Equals("True"))
+                    {
+                        cooled = true;
+                    }
+                    string confirmedstring = dt.Rows[i]["Confirmed"].ToString();
+                    if (confirmedstring.Equals("True"))
+                    {
+                        confirmed = true;
+                    }
 
-                Order o = new Order(ID,customerID,dateIn,dateOut,quantity,cooled,confirmed,comment);
-                o.Terminal = terminal;
-                orders.Add(o);
+                    Order o = new Order(ID, customerID, dateIn, dateOut, quantity, cooled, confirmed, comment);
+                    o.Terminal = terminal;
+                    if (FirstOP != null && LastOP != null)
+                    {
+                        o.FirstOccupiedPlace = FirstOP;
+                        o.LastOccupiedPlace = LastOP;
+                    }
+                    else
+                    {
+                        o.FirstOccupiedPlace = 0;
+                        o.LastOccupiedPlace = 0;
+                    }
+                    orders.Add(o);
+                }
+                return orders;
             }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                return null; }
+
             
-            return orders;
         }
 
         public static void SetDeliveryNoteToSuccess(int id)
@@ -153,6 +182,26 @@ namespace SocketServer
                 SqlCommand cmd = new SqlCommand
                         (
                             "UPDATE DeliveryNotes SET Success=1 Where Id=" + id
+                        );
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+            }
+            catch (Exception e) { Console.Write(e.Message); }
+        }
+
+        public static void SetOrderOccupiedPlaces(int id, int FirstOP, int LastOP)
+        {
+
+            try
+            {
+                SqlConnection con = new SqlConnection(MateFenyvConnectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand
+                        (
+                            "UPDATE Orders SET FirstOccupiedPlace="+FirstOP+", LastOccupiedPlace="+LastOP+" Where OrderId=" + id
                         );
                 cmd.Connection = con;
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
